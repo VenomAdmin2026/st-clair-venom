@@ -97,9 +97,20 @@
 
         // Supabase invitation links may contain a
         // temporary session in the URL fragment.
-        const invitationType = fragment.get("type");
+        
+const invitationType = fragment.get("type");
 
-        if (invitationType === "invite") {
+// Supabase recovery links also contain a temporary
+// authenticated session that must be established
+// before the password can be updated.
+
+
+        
+if (
+  invitationType === "invite" ||
+  invitationType === "recovery"
+) {
+
           const accessToken = fragment.get("access_token");
           const refreshToken = fragment.get("refresh_token");
 
