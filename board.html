@@ -265,6 +265,72 @@ document.getElementById("boardMessage").textContent =
         ? "Select an available discussion area."
         : "No discussion areas are available for your account.";
     
+    // Keep track of the selected discussion board.
+    let activeBoardId = null;
+
+    const newPostForm =
+      document.getElementById("newPostForm");
+
+    const submitPost =
+      document.getElementById("submitPost");
+
+    const newPostMessage =
+      document.getElementById("newPostMessage");
+
+    // Enable the form only for authorized boards.
+    newPostForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!activeBoardId ||
+          !permittedSlugs.has(activeBoardId)) {
+        newPostMessage.textContent =
+          "You are not authorized to post here.";
+        return;
+      }
+
+      const title =
+        document.getElementById("postTitle").value.trim();
+
+      const content =
+        document.getElementById("postContent").value.trim();
+
+      if (!title || !content) return;
+
+      submitPost.disabled = true;
+      newPostMessage.textContent = "Publishing discussion...";
+
+      const { data: { user }, error: userError } =
+        await supabase.auth.getUser();
+
+      if (userError || !user) {
+        newPostMessage.textContent =
+          "Please sign in again.";
+        submitPost.disabled = false;
+        return;
+      }
+
+      const { error } = await supabase
+        .from("venom_posts")
+        .insert({
+          board_id: activeBoardId,
+          author_id: user.id,
+          title: title,
+          content: content
+        });
+
+      if (error) {
+        newPostMessage.textContent =
+          "Unable to publish discussion.";
+        console.error("Post creation:", error);
+      } else {
+        newPostMessage.textContent =
+          "Discussion published successfully!";
+        newPostForm.reset();
+      }
+
+      submitPost.disabled = false;
+    });
+
     // Open a discussion area when selected.
     const boardTitles = {
       "14u-discussion": "14U Team Discussion",
@@ -286,6 +352,14 @@ document.getElementById("boardMessage").textContent =
       button => {
         button.addEventListener("click", () => {
           const boardId = button.dataset.board;
+          
+activeBoardId = boardId;
+
+submitPost.disabled = false;
+
+newPostMessage.textContent =
+  "You can create a discussion in this board.";
+
 
           // Only open boards Supabase allowed.
           if (!permittedSlugs.has(boardId)) return;
