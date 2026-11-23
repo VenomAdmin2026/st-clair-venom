@@ -99,3 +99,26 @@ function renderHybrid() {
 }
 hubTeam.addEventListener('change', renderHybrid);
 renderHybrid();
+
+async function loadVenomData() {
+  try {
+    const response = await fetch("./venom-data.json", {
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error("Unable to load Venom data");
+    }
+
+    const data = await response.json();
+
+    console.log("Venom website data loaded:", data);
+
+    return data;
+  } catch (error) {
+    console.error("Venom data error:", error);
+    return null;
+  }
+}
+
+loadVenomData();
