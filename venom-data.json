@@ -1,20 +1,19 @@
-
 {
   "organization": "St. Clair Venom Baseball",
   "teams": [
     {
       "name": "St. Clair Venom 8U",
       "ageGroup": "8U",
-      "description": "",
-      "headCoach": "",
-      "homeField": ""
+      "description": "Entry Level",
+      "headCoach": "Dale Stafford",
+      "homeField": "Margaret Dillard Park"
     },
     {
       "name": "St. Clair Venom 14U",
       "ageGroup": "14U",
-      "description": "",
-      "headCoach": "",
-      "homeField": ""
+      "description": "Leadership Development",
+      "headCoach": "Coty Thomason",
+      "homeField": "Margaret Dillard Park"
     }
   ]
 }
