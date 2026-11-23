@@ -169,6 +169,43 @@ document.querySelectorAll("[data-board]").forEach(
 
 document.getElementById("boardMessage").textContent =
   "Checking your team discussion permissions...";
+    
+    // Retrieve only discussion boards the signed-in
+    // member is authorized to view through Supabase RLS.
+    const { data: allowedBoards, error: boardsError } =
+      await supabase
+        .from("venom_boards")
+        .select("slug");
+
+    const boardMessage =
+      document.getElementById("boardMessage");
+
+    if (boardsError) {
+      boardMessage.textContent =
+        "Unable to load discussion permissions.";
+      console.error("Board permissions:", boardsError);
+      return;
+    }
+
+    const permittedSlugs = new Set(
+      (allowedBoards || []).map(board => board.slug)
+    );
+
+    document.querySelectorAll("[data-board]").forEach(
+      button => {
+        const permitted =
+          permittedSlugs.has(button.dataset.board);
+
+        button.hidden = !permitted;
+        button.disabled = !permitted;
+      }
+    );
+
+    boardMessage.textContent =
+      permittedSlugs.size
+        ? "Select an available discussion area."
+        : "No discussion areas are available for your account.";
+
 
   });
 </script>
