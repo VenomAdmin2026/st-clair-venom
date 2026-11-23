@@ -1,0 +1,20 @@
+
+{
+  "organization": "St. Clair Venom Baseball",
+  "teams": [
+    {
+      "name": "St. Clair Venom 8U",
+      "ageGroup": "8U",
+      "description": "",
+      "headCoach": "",
+      "homeField": ""
+    },
+    {
+      "name": "St. Clair Venom 14U",
+      "ageGroup": "14U",
+      "description": "",
+      "headCoach": "",
+      "homeField": ""
+    }
+  ]
+}
