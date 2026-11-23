@@ -5,30 +5,200 @@
   <meta charset="UTF-8">
   <meta name="viewport"
         content="width=device-width, initial-scale=1">
-
   <title>Venom Member Activation</title>
-
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <main style="
-    max-width: 500px;
-    margin: 100px auto;
-    padding: 30px;
-    text-align: center;
-  ">
+  <main style="max-width:480px;margin:80px auto;padding:24px;">
     <h1>ST. CLAIR VENOM</h1>
-
     <h2>Member Account Activation</h2>
 
-    <p>
-      Welcome to the Venom Team Communication Hub.
+    <p id="status" role="status">
+      Checking your invitation...
     </p>
 
-    <p>
-      Secure account activation is being configured.
-    </p>
+    <form id="activationForm" hidden>
+      <label for="password">Create password</label>
+      <input
+        id="password"
+        type="password"
+        minlength="12"
+        maxlength="128"
+        autocomplete="new-password"
+        required
+        style="display:block;width:100%;padding:12px;margin:12px 0;"
+      >
+
+      <label for="confirmPassword">Confirm password</label>
+      <input
+        id="confirmPassword"
+        type="password"
+        minlength="12"
+        maxlength="128"
+        autocomplete="new-password"
+        required
+        style="display:block;width:100%;padding:12px;margin:12px 0;"
+      >
+
+      <button type="submit" id="activateButton">
+        Activate Account
+      </button>
+    </form>
+
+    <p id="result" role="alert"></p>
   </main>
+
+  <script type="module">
+    import { createClient } from
+      "https://esm.sh/@supabase/supabase-js@2";
+
+    const SUPABASE_URL =
+      "https://fywijrfymmhctxfvawnv.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_SD1rKRGdb7kX0XLTe7ilwg_-enZFxzb";
+
+    const supabase = createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY,
+      {
+        auth: {
+          detectSessionInUrl: true,
+          persistSession: false,
+          autoRefreshToken: false
+        }
+      }
+    );
+
+    const status = document.getElementById("status");
+    const result = document.getElementById("result");
+    const form = document.getElementById("activationForm");
+    const button = document.getElementById("activateButton");
+
+    let invitationVerified = false;
+
+    async function checkInvitation() {
+      try {
+        const query = new URLSearchParams(
+          window.location.search
+        );
+
+        const fragment = new URLSearchParams(
+          window.location.hash.slice(1)
+        );
+
+        const error =
+          query.get("error_description") ||
+          fragment.get("error_description");
+
+        if (error) {
+          throw new Error(error);
+        }
+
+        // Supabase invitation links may contain a
+        // temporary session in the URL fragment.
+        const invitationType = fragment.get("type");
+
+        if (invitationType === "invite") {
+          const accessToken = fragment.get("access_token");
+          const refreshToken = fragment.get("refresh_token");
+
+          if (accessToken && refreshToken) {
+            const { error: sessionError } =
+              await supabase.auth.setSession({
+                access_token: accessToken,
+                refresh_token: refreshToken
+              });
+
+            if (sessionError) throw sessionError;
+          }
+        }
+
+        // PKCE links can contain a one-time code.
+        const code = query.get("code");
+
+        if (code) {
+          const { error: codeError } =
+            await supabase.auth.exchangeCodeForSession(code);
+
+          if (codeError) throw codeError;
+        }
+
+        const { data, error: userError } =
+          await supabase.auth.getUser();
+
+        if (userError || !data.user) {
+          throw new Error(
+            "No valid invitation session was found."
+          );
+        }
+
+        // Only accept a fresh invitation flow.
+        // A normal existing login is not enough.
+        if (invitationType !== "invite" && !code) {
+          throw new Error(
+            "Please open your invitation email link."
+          );
+        }
+
+        invitationVerified = true;
+        form.hidden = false;
+        status.textContent =
+          "Invitation verified. Create your password.";
+
+        // Remove temporary tokens from the address bar.
+        history.replaceState(
+          null,
+          "",
+          window.location.pathname
+        );
+
+      } catch (error) {
+        status.textContent =
+          "Your invitation could not be verified.";
+        result.textContent =
+          "The link may have expired. Ask your administrator for a new invitation.";
+      }
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!invitationVerified) return;
+
+      const password =
+        document.getElementById("password").value;
+
+      const confirmation =
+        document.getElementById("confirmPassword").value;
+
+      if (password !== confirmation) {
+        result.textContent = "Passwords do not match.";
+        return;
+      }
+
+      button.disabled = true;
+      result.textContent = "Activating your account...";
+
+      const { error } = await supabase.auth.updateUser({
+        password
+      });
+
+      if (error) {
+        result.textContent = error.message;
+        button.disabled = false;
+        return;
+      }
+
+      await supabase.auth.signOut();
+
+      form.hidden = true;
+      status.textContent = "Account activated!";
+      result.textContent =
+        "Your password has been saved. Your account must be approved before you can access private team discussions.";
+    });
+
+    checkInvitation();
+  </script>
 </body>
 </html>
