@@ -133,18 +133,27 @@
           );
         }
 
-        // Only accept a fresh invitation flow.
+        
+        // Accept invitation and password recovery links.
         // A normal existing login is not enough.
-        if (invitationType !== "invite" && !code) {
+        const linkType =
+          fragment.get("type") || query.get("type");
+
+        if (
+          linkType !== "invite" &&
+          linkType !== "recovery" &&
+          !code
+        ) {
           throw new Error(
-            "Please open your invitation email link."
+            "Please open your invitation or password reset email."
           );
         }
+
 
         invitationVerified = true;
         form.hidden = false;
         status.textContent =
-          "Invitation verified. Create your password.";
+  "Secure link verified. Create your new password.";
 
         // Remove temporary tokens from the address bar.
         history.replaceState(
@@ -155,9 +164,9 @@
 
       } catch (error) {
         status.textContent =
-          "Your invitation could not be verified.";
-        result.textContent =
-          "The link may have expired. Ask your administrator for a new invitation.";
+  "Your secure link could not be verified.";
+result.textContent =
+  "The link may have expired. Request a new invitation or password reset.";
       }
     }
 
