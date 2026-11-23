@@ -121,4 +121,67 @@ async function loadVenomData() {
   }
 }
 
-loadVenomData();
+loadVenomData().then(data => {
+  if (!data || !Array.isArray(data.teams)) return;
+
+  for (const item of data.teams) {
+    const team = teams.find(t => t.age === item.ageGroup);
+    if (!team) continue;
+
+    if (typeof item.name === "string" && item.name.trim()) {
+      team.name = item.name;
+    }
+
+    if (typeof item.description === "string" &&
+        item.description.trim()) {
+      team.season = item.description;
+    }
+
+    if (typeof item.headCoach === "string" &&
+        item.headCoach.trim()) {
+      team.coaches = [item.headCoach];
+    }
+  }
+
+  // Refresh the existing team cards with the JSON data.
+  document.querySelectorAll("#teamCards .team-card")
+    .forEach((card, index) => {
+      const team = teams[index];
+      if (!team) return;
+
+      const heading = card.querySelector("h3");
+      const description = card.querySelector(".muted");
+
+      if (heading) heading.textContent = team.name;
+      if (description) description.textContent = team.season;
+    });
+
+  // Refresh team names in the existing dropdowns.
+  for (const select of [hubTeam, paymentTeam]) {
+    for (const option of select.options) {
+      const team = teamById(option.value);
+      if (team) option.textContent = team.name;
+    }
+  }
+
+  // Refresh the existing schedule and hub displays.
+  document.querySelectorAll("#events .event").forEach((element, index) => {
+    const event = events[index];
+    if (!event) return;
+
+    const description = element.querySelector("p");
+    if (description) {
+      description.textContent =
+        event.location + " · " +
+        (teamById(event.teamId)?.name || "All teams");
+    }
+  });
+
+  renderHub();
+  renderPayment();
+  renderHybrid();
+
+  console.log("Venom team cards updated successfully!");
+});
+
+
