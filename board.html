@@ -256,11 +256,71 @@ document.getElementById("boardMessage").textContent =
 
           postsSection.hidden = false;
 
+          
           postsMessage.textContent =
-            "Loading discussion messages will be added next.";
+            "Loading discussion messages...";
 
-          document.getElementById("postsList")
-            .replaceChildren();
+          const postsList =
+            document.getElementById("postsList");
+
+          postsList.replaceChildren();
+
+          async function loadPosts() {
+            const { data: posts, error } =
+              await supabase
+                .from("venom_posts")
+                .select("id, title, content, created_at")
+                .eq("board_id", boardId)
+                .order("created_at", { ascending: false });
+
+            if (error) {
+              postsMessage.textContent =
+                "Unable to load messages.";
+              console.error("Posts error:", error);
+              return;
+            }
+
+            if (!posts || posts.length === 0) {
+              postsMessage.textContent =
+                "No messages yet. Be the first to start a discussion!";
+              return;
+            }
+
+            postsMessage.textContent =
+              posts.length + " discussion post(s)";
+
+            posts.forEach(post => {
+              const article =
+                document.createElement("article");
+
+              article.style.cssText =
+                "padding:20px;margin:15px 0;" +
+                "border:1px solid #555;border-radius:10px;";
+
+              const heading =
+                document.createElement("h3");
+
+              heading.textContent = post.title;
+
+              const content =
+                document.createElement("p");
+
+              content.textContent = post.content;
+
+              const date =
+                document.createElement("small");
+
+              date.textContent =
+                new Date(post.created_at)
+                  .toLocaleString();
+
+              article.append(heading, content, date);
+              postsList.appendChild(article);
+            });
+          }
+
+          loadPosts();
+
 
           postsSection.scrollIntoView({
             behavior: "smooth"
