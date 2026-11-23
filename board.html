@@ -50,6 +50,45 @@
 
     </p>
 
+<section id="discussionBoard" hidden>
+  <h2>Venom Team Communication Hub</h2>
+
+  <p>
+    Select a discussion area to view team messages.
+  </p>
+
+  <div style="
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-top:25px;
+  ">
+
+    <button type="button" data-board="14u-discussion">
+      <h3>14U Team Discussion</h3>
+      <p>Messages for the 14U team.</p>
+    </button>
+
+    <button type="button" data-board="8u-discussion">
+      <h3>8U Team Discussion</h3>
+      <p>Messages for the 8U team.</p>
+    </button>
+
+    <button type="button" data-board="announcements">
+      <h3>Team Announcements</h3>
+      <p>Important updates from coaches.</p>
+    </button>
+
+    <button type="button" data-board="coaches-only">
+      <h3>Coaches Only</h3>
+      <p>Private discussions for coaches.</p>
+    </button>
+
+  </div>
+
+  <p id="boardMessage" role="status"></p>
+</section>
+
     <a href="index.html">Return to Homepage</a>
   </main>
   
