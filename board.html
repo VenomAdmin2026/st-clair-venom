@@ -52,5 +52,72 @@
 
     <a href="index.html">Return to Homepage</a>
   </main>
+  
+<script type="module">
+  import { createClient } from
+    "https://esm.sh/@supabase/supabase-js@2";
+
+  const SUPABASE_URL =
+    "https://fywijrfymmhctxfvawnv.supabase.co";
+
+  const SUPABASE_KEY =
+    "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+
+  const supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  const loginForm = document.getElementById("loginForm");
+  const loginMessage = document.getElementById("loginMessage");
+
+  loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+    loginMessage.textContent = "Signing in...";
+
+    const { data, error } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+    if (error) {
+      loginMessage.textContent =
+        "Sign-in failed. Check your email and password.";
+      return;
+    }
+
+    const { data: profile, error: profileError } =
+      await supabase
+        .from("venom_profiles")
+        .select("role, approved")
+        .eq("id", data.user.id)
+        .single();
+
+    if (profileError || !profile?.approved) {
+      await supabase.auth.signOut();
+
+      loginMessage.textContent =
+        "Your account is awaiting administrator approval.";
+      return;
+    }
+
+    loginForm.hidden = true;
+
+    loginMessage.textContent =
+      "Welcome! You are signed in as " +
+      profile.role + ".";
+
+    // Private discussions will be added next.
+  });
+</script>
+
 </body>
 </html>
