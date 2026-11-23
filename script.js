@@ -184,4 +184,48 @@ loadVenomData().then(data => {
   console.log("Venom team cards updated successfully!");
 });
 
+/* St. Clair Venom 14U Photo Gallery */
+
+const venom14uPhotos = [
+  "Cancer awareness1.JPG",
+  "Carson Ranger.jpeg",
+  "Casey hit.JPG",
+  "Go Go PowerRanger.jpeg",
+  "Hayden pitch.JPG",
+  "Hudson Hit.PNG",
+  "Walking with Dale.PNG"
+];
+
+const venomGallery = document.getElementById("venom14uGallery");
+const venomPhotoGrid = document.getElementById("venom14uPhotos");
+
+if (venomGallery && venomPhotoGrid) {
+  venomPhotoGrid.innerHTML = venom14uPhotos.map((filename, index) => {
+    const photoURL = encodeURIComponent(filename);
+
+    return `
+      <a href="${photoURL}" target="_blank" rel="noopener noreferrer"
+         aria-label="Open 14U team photo ${index + 1}">
+        <img src="${photoURL}"
+             alt="St. Clair Venom 14U team photo ${index + 1}"
+             loading="lazy">
+      </a>
+    `;
+  }).join("");
+
+  // Display the gallery when a visitor selects a team.
+  document.querySelectorAll('[data-team]').forEach(button => {
+    button.addEventListener("click", () => {
+      venomGallery.hidden = button.dataset.team !== "venom-14u";
+    });
+  });
+
+  // Hide the gallery when the team details are closed.
+  document.getElementById("teamDetails")?.addEventListener("click", event => {
+    if (event.target.closest("#closeTeam")) {
+      venomGallery.hidden = true;
+    }
+  });
+}
+
 
