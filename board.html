@@ -322,11 +322,25 @@ document.getElementById("boardMessage").textContent =
         newPostMessage.textContent =
           "Unable to publish discussion.";
         console.error("Post creation:", error);
-      } else {
-        newPostMessage.textContent =
-          "Discussion published successfully!";
-        newPostForm.reset();
-      }
+      
+} else {
+  newPostMessage.textContent =
+    "Discussion published successfully!";
+
+  newPostForm.reset();
+
+  // Reload the current discussion board
+  // so the new post appears immediately.
+  const currentBoardButton =
+    document.querySelector(
+      `[data-board="${activeBoardId}"]`
+    );
+
+  if (currentBoardButton) {
+    currentBoardButton.click();
+  }
+}
+
 
       submitPost.disabled = false;
     });
