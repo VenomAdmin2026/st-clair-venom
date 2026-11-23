@@ -148,13 +148,28 @@
       return;
     }
 
-    loginForm.hidden = true;
+    
+loginForm.hidden = true;
 
-    loginMessage.textContent =
-      "Welcome! You are signed in as " +
-      profile.role + ".";
+loginMessage.textContent =
+  "Welcome! You are signed in as " +
+  profile.role + ".";
 
-    // Private discussions will be added next.
+// Display the discussion board after login.
+document.getElementById("discussionBoard").hidden = false;
+
+// Keep discussion areas unavailable until
+// Supabase verifies which boards this user
+// is authorized to access.
+document.querySelectorAll("[data-board]").forEach(
+  (button) => {
+    button.disabled = true;
+  }
+);
+
+document.getElementById("boardMessage").textContent =
+  "Checking your team discussion permissions...";
+
   });
 </script>
 
