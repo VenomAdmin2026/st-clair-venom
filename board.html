@@ -225,6 +225,55 @@ document.getElementById("boardMessage").textContent =
       permittedSlugs.size
         ? "Select an available discussion area."
         : "No discussion areas are available for your account.";
+    
+    // Open a discussion area when selected.
+    const boardTitles = {
+      "14u-discussion": "14U Team Discussion",
+      "8u-discussion": "8U Team Discussion",
+      "announcements": "Team Announcements",
+      "coaches-only": "Coaches Only"
+    };
+
+    const postsSection =
+      document.getElementById("postsSection");
+
+    const postsMessage =
+      document.getElementById("postsMessage");
+
+    const selectedBoardTitle =
+      document.getElementById("selectedBoardTitle");
+
+    document.querySelectorAll("[data-board]").forEach(
+      button => {
+        button.addEventListener("click", () => {
+          const boardId = button.dataset.board;
+
+          // Only open boards Supabase allowed.
+          if (!permittedSlugs.has(boardId)) return;
+
+          selectedBoardTitle.textContent =
+            boardTitles[boardId] || "Team Discussion";
+
+          postsSection.hidden = false;
+
+          postsMessage.textContent =
+            "Loading discussion messages will be added next.";
+
+          document.getElementById("postsList")
+            .replaceChildren();
+
+          postsSection.scrollIntoView({
+            behavior: "smooth"
+          });
+        });
+      }
+    );
+
+    document.getElementById("backToBoards")
+      .addEventListener("click", () => {
+        postsSection.hidden = true;
+      });
+
 
 
   });
