@@ -175,7 +175,7 @@ document.getElementById("boardMessage").textContent =
     const { data: allowedBoards, error: boardsError } =
       await supabase
         .from("venom_boards")
-        .select("slug");
+        .select("id");
 
     const boardMessage =
       document.getElementById("boardMessage");
@@ -188,7 +188,7 @@ document.getElementById("boardMessage").textContent =
     }
 
     const permittedSlugs = new Set(
-      (allowedBoards || []).map(board => board.slug)
+      (allowedBoards || []).map(board => board.id)
     );
 
     document.querySelectorAll("[data-board]").forEach(
