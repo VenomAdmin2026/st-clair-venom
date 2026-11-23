@@ -9,3 +9,24 @@
 #liveCalendar { margin-top: 1rem; overflow: hidden; }
 #coachUpdates, #communityAccess { margin-top: 1rem; }
 @media (max-width: 650px) { #liveCalendar iframe { height: 340px !important; } }
+
+/* Venom homepage pitching background */
+#home.hero {
+  position: relative;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(8, 8, 15, 0.92) 0%,
+      rgba(8, 8, 15, 0.72) 48%,
+      rgba(8, 8, 15, 0.35) 100%
+    ),
+    url("Hayden%20pitch.JPG");
+  background-size: cover;
+  background-position: center 40%;
+  background-repeat: no-repeat;
+}
+
+#home.hero .hero-inner {
+  position: relative;
+  z-index: 1;
+}
