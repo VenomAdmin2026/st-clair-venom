@@ -99,6 +99,45 @@
     Select a discussion board to view messages.
   </p>
 
+<section id="newPostSection"
+  style="margin:25px 0;padding:20px;border:1px solid #555;border-radius:10px;">
+
+  <h3>Start a New Discussion</h3>
+
+  <form id="newPostForm">
+
+    <label for="postTitle">Discussion Title</label>
+    <input
+      type="text"
+      id="postTitle"
+      maxlength="120"
+      required
+      placeholder="Example: Saturday Tournament"
+      style="display:block;width:100%;padding:12px;margin:10px 0 20px;"
+    >
+
+    <label for="postContent">Your Message</label>
+    <textarea
+      id="postContent"
+      rows="5"
+      maxlength="5000"
+      required
+      placeholder="Write your message here..."
+      style="display:block;width:100%;padding:12px;margin:10px 0 20px;"
+    ></textarea>
+
+    <button type="submit" id="submitPost" disabled>
+      Post Discussion
+    </button>
+
+  </form>
+
+  <p id="newPostMessage" role="status">
+    Posting permissions are being configured.
+  </p>
+
+</section>
+
   <div id="postsList"></div>
 
   <button type="button" id="backToBoards">
