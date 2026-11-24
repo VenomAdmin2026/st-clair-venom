@@ -71,7 +71,41 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      panel.append(title, details, description, link);
+      
+const videoUrl = new URL(link.href);
+let videoId = "";
+
+if (videoUrl.hostname === "youtu.be") {
+  videoId = videoUrl.pathname.split("/")[1];
+} else if (videoUrl.pathname.startsWith("/shorts/")) {
+  videoId = videoUrl.pathname.split("/")[2];
+} else {
+  videoId = videoUrl.searchParams.get("v");
+}
+
+if (videoId && /^[A-Za-z0-9_-]{11}$/.test(videoId)) {
+  const thumbnail = document.createElement("img");
+
+  thumbnail.src =
+    `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+
+  thumbnail.alt = video.title;
+  thumbnail.loading = "lazy";
+  thumbnail.style.width = "100%";
+  thumbnail.style.aspectRatio = "16 / 9";
+  thumbnail.style.objectFit = "cover";
+  thumbnail.style.borderRadius = "10px";
+  thumbnail.style.marginBottom = "15px";
+
+  thumbnail.addEventListener("error", () => {
+    thumbnail.remove();
+  });
+
+  panel.appendChild(thumbnail);
+}
+
+panel.append(title, details, description, link);
+
       container.appendChild(panel);
     });
   }
