@@ -498,6 +498,56 @@ replyForm.style.marginTop = "15px";
 
               replyStatus.setAttribute("role", "status");
 
+replyInput.disabled = false;
+replyButton.disabled = false;
+replyStatus.textContent = "";
+
+replyForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const message = replyInput.value.trim();
+
+  if (!message) {
+    replyStatus.textContent = "Please write a reply.";
+    return;
+  }
+
+  replyButton.disabled = true;
+  replyStatus.textContent = "Posting your reply...";
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+    replyStatus.textContent =
+      "Please sign in again.";
+    replyButton.disabled = false;
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("venom_replies")
+    .insert({
+      post_id: replyForm.dataset.postId,
+      author_id: user.id,
+      content: message
+    });
+
+  if (error) {
+    console.error("Reply error:", error);
+    replyStatus.textContent =
+      "Unable to post reply: " + error.message;
+  } else {
+    replyInput.value = "";
+    replyStatus.textContent =
+      "Reply published successfully!";
+  }
+
+  replyButton.disabled = false;
+});
+
               replyForm.append(
                 replyInput,
                 replyButton,
