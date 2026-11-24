@@ -553,6 +553,43 @@ replyAuthor.style.marginBottom = "6px";
 
     
 replyItem.append(replyAuthor, replyText, replyDate);
+    if (currentUserRole === "admin") {
+  const deleteReplyButton = document.createElement("button");
+
+  deleteReplyButton.type = "button";
+  deleteReplyButton.textContent = "Delete Reply";
+
+  deleteReplyButton.style.cssText =
+    "display:block;margin-top:10px;" +
+    "background:#b91c1c;color:white;" +
+    "padding:8px 12px;border:none;" +
+    "border-radius:6px;cursor:pointer;";
+
+  deleteReplyButton.addEventListener("click", async () => {
+    const confirmed = confirm(
+      "Are you sure you want to delete this reply? This cannot be undone."
+    );
+
+    if (!confirmed) return;
+
+    deleteReplyButton.disabled = true;
+
+    const { error } = await supabase
+      .from("venom_replies")
+      .delete()
+      .eq("id", reply.id);
+
+    if (error) {
+      alert("Unable to delete reply: " + error.message);
+      deleteReplyButton.disabled = false;
+      return;
+    }
+
+    await loadReplies();
+  });
+
+  replyItem.appendChild(deleteReplyButton);
+}
 
     repliesList.append(replyItem);
   }
