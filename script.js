@@ -34,7 +34,25 @@ function showTeam(id){
   if (!detail) return;
   const t=teamById(id);if(!t)return;const te=events.filter(e=>e.teamId===id);detail.innerHTML=`<div class="section-head"><div><p class="eyebrow">TEAM PROFILE</p><h2>${escapeHTML(t.name)}</h2></div><button class="team-button" id="closeTeam">CLOSE ×</button></div><div class="team-info"><div><h3>COACHES</h3>${t.coaches.map(c=>`<p>${escapeHTML(c)}</p>`).join('')}</div><div><h3>ROSTER</h3>${t.players.length?t.players.map(pl=>`<p>#${escapeHTML(pl.number)} · ${escapeHTML(pl.name)} · ${escapeHTML(pl.position)}</p>`).join(''):'<p class="muted">Roster information coming soon.</p>'}</div><div><h3>UPCOMING EVENTS</h3>${te.length?te.map(e=>`<p>${escapeHTML(e.date)} · ${escapeHTML(e.title)}</p>`).join(''):'<p class="muted">Schedule coming soon.</p>'}</div></div>`;document.getElementById('closeTeam').addEventListener('click',()=>{detail.innerHTML='<p class="muted">Choose a team above to see its details.</p>'});detail.scrollIntoView({behavior:'smooth',block:'start'});}
 document.querySelectorAll('[data-team]').forEach(b=>b.addEventListener('click',()=>showTeam(b.dataset.team)));
-document.getElementById('events').innerHTML=events.map(e=>`<article class="event"><div class="date">${escapeHTML(e.date)}</div><div><h3>${escapeHTML(e.title)}</h3><p>${escapeHTML(e.location)} · ${escapeHTML(teamById(e.teamId)?.name||'All teams')}</p></div><span class="tag">${escapeHTML(e.status)}</span></article>`).join('');
+
+const eventsContainer = document.getElementById('events');
+
+if (eventsContainer) {
+  eventsContainer.innerHTML = events.map(e => `
+    <article class="event">
+      <div class="date">${escapeHTML(e.date)}</div>
+      <div>
+        <h3>${escapeHTML(e.title)}</h3>
+        <p>
+          ${escapeHTML(e.location)} ·
+          ${escapeHTML(teamById(e.teamId)?.name || 'All teams')}
+        </p>
+      </div>
+      <span class="tag">${escapeHTML(e.status)}</span>
+    </article>
+  `).join('');
+}
+
 document.getElementById('year').textContent=new Date().getFullYear();
 const menu=document.getElementById('menu'),nav=document.getElementById('nav');menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(open))});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false')}));
 
