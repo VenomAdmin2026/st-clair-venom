@@ -166,6 +166,7 @@ function renderHybrid() {  if (!hubTeam) return;
     ? `<a class="btn outline" href="${escapeHTML(form)}" target="_blank" rel="noopener noreferrer">SUBMIT COACH UPDATE ↗</a>`
     : '<p class="muted">Coach submission form will appear once the administrator configures it.</p>';
   const community = document.getElementById('communityAccess');
+  if (!community) return;
   const organization = verifiedExternal(hybridSettings.organizationGroup, ['groups.google.com']);
   const family = verifiedExternal(hybridSettings.teamGroups[id], ['groups.google.com']);
   const coaches = verifiedExternal(hybridSettings.coachGroups[id], ['groups.google.com']);
