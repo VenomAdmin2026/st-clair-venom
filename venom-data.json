@@ -15,5 +15,16 @@
       "headCoach": "Coty Thomason",
       "homeField": "Margaret Dillard Park"
     }
+  ],
+  "trainingVideos": [
+    {
+      "team": "8U",
+      "category": "Baseball Skills and Drills",
+      "title": "Basic Batting Stance",
+      "youtubeUrl": "Baseball tutorial for kids: Batting Stance",
+      "description": "",
+      "addedBy": "Coach Coty",
+      "dateAdded": "2026-11-23"
+    }
   ]
 }
