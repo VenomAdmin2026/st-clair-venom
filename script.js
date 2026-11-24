@@ -53,7 +53,11 @@ if (eventsContainer) {
   `).join('');
 }
 
-document.getElementById('year').textContent=new Date().getFullYear();
+const yearElement = document.getElementById('year');
+
+if (yearElement) {
+  yearElement.textContent = new Date().getFullYear();
+}
 const menu=document.getElementById('menu'),nav=document.getElementById('nav');menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(open))});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false')}));
 
 // TEAM HUB CONFIGURATION: Replace examples with real approved team information.
