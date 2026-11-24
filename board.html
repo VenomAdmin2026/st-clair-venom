@@ -581,11 +581,17 @@ replyForm.addEventListener("submit", async (event) => {
     console.error("Reply error:", error);
     replyStatus.textContent =
       "Unable to post reply: " + error.message;
-  } else {
-    replyInput.value = "";
-    replyStatus.textContent =
-      "Reply published successfully!";
-  }
+  
+} else {
+  replyInput.value = "";
+
+  replyStatus.textContent =
+    "Reply published successfully!";
+
+  // Refresh replies for this discussion only.
+  await loadReplies();
+}
+
 
   replyButton.disabled = false;
 });
