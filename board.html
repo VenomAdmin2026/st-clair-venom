@@ -441,7 +441,77 @@ newPostMessage.textContent =
                 new Date(post.created_at)
                   .toLocaleString();
 
-              article.append(heading, content, date);
+              
+              // Create a reply area beneath each post.
+              const replySection =
+                document.createElement("section");
+
+              replySection.style.marginTop = "20px";
+
+              const replyHeading =
+                document.createElement("h4");
+
+              replyHeading.textContent = "Replies";
+
+              const repliesList =
+                document.createElement("div");
+
+              repliesList.dataset.postId = post.id;
+
+              const replyForm =
+                document.createElement("form");
+
+              replyForm.style.marginTop = "15px";
+
+              const replyInput =
+                document.createElement("textarea");
+
+              replyInput.placeholder =
+                "Write a reply...";
+
+              replyInput.rows = 3;
+              replyInput.maxLength = 3000;
+              replyInput.required = true;
+              replyInput.disabled = true;
+
+              replyInput.style.cssText =
+                "display:block;width:100%;" +
+                "padding:12px;margin-bottom:10px;";
+
+              const replyButton =
+                document.createElement("button");
+
+              replyButton.type = "submit";
+              replyButton.textContent = "Post Reply";
+              replyButton.disabled = true;
+
+              const replyStatus =
+                document.createElement("p");
+
+              replyStatus.textContent =
+                "Reply permissions are being configured.";
+
+              replyStatus.setAttribute("role", "status");
+
+              replyForm.append(
+                replyInput,
+                replyButton,
+                replyStatus
+              );
+
+              replySection.append(
+                replyHeading,
+                repliesList,
+                replyForm
+              );
+
+              article.append(
+                heading,
+                content,
+                date,
+                replySection
+              );
+
               postsList.appendChild(article);
             });
           }
