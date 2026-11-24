@@ -99,7 +99,9 @@
     Select a discussion board to view messages.
   </p>
 
-<section id="newPostSection"
+
+<section id="newPostSection" hidden
+
   style="margin:25px 0;padding:20px;border:1px solid #555;border-radius:10px;">
 
   <h3>Start a New Discussion</h3>
@@ -165,6 +167,9 @@
     SUPABASE_URL,
     SUPABASE_KEY
   );
+  
+let currentUserRole = null;
+
 
   const loginForm = document.getElementById("loginForm");
   const loginMessage = document.getElementById("loginMessage");
@@ -206,6 +211,9 @@
         "Your account is awaiting administrator approval.";
       return;
     }
+    
+currentUserRole = profile.role;
+
 
     
 loginForm.hidden = true;
@@ -367,12 +375,25 @@ document.getElementById("boardMessage").textContent =
         button.addEventListener("click", () => {
           const boardId = button.dataset.board;
           
+
 activeBoardId = boardId;
 
-submitPost.disabled = false;
+const canCreateDiscussion =
+  boardId !== "announcements" ||
+  currentUserRole === "admin" ||
+  currentUserRole === "coach";
 
-newPostMessage.textContent =
-  "You can create a discussion in this board.";
+
+document.getElementById("newPostSection").style.display =
+  canCreateDiscussion ? "block" : "none";
+
+
+submitPost.disabled = !canCreateDiscussion;
+
+newPostMessage.textContent = canCreateDiscussion
+  ? "You can create a discussion in this board."
+  : "";
+
 
 
           // Only open boards Supabase allowed.
