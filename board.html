@@ -396,7 +396,9 @@ newPostMessage.textContent =
             const { data: posts, error } =
               await supabase
                 .from("venom_posts")
-                .select("id, title, content, created_at")
+                
+.select("id, author_id, title, content, created_at")
+
                 .eq("board_id", boardId)
                 .order("created_at", { ascending: false });
 
@@ -416,7 +418,23 @@ newPostMessage.textContent =
             postsMessage.textContent =
               posts.length + " discussion post(s)";
 
-            posts.forEach(post => {
+            
+for (const post of posts) {
+  const { data: authorName, error: authorError } =
+    await supabase.rpc("venom_author_name", {
+      author_user_id: post.author_id
+    });
+
+  const postAuthor = document.createElement("strong");
+
+  postAuthor.textContent =
+    authorError || !authorName
+      ? "Venom Member"
+      : authorName;
+
+  postAuthor.style.display = "block";
+  postAuthor.style.marginBottom = "8px";
+
               const article =
                 document.createElement("article");
 
@@ -636,7 +654,7 @@ replyForm.addEventListener("submit", async (event) => {
               );
 
               postsList.appendChild(article);
-            });
+            }
           }
 
           loadPosts();
