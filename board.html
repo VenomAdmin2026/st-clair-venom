@@ -518,7 +518,7 @@ replyForm.addEventListener("submit", async (event) => {
   const {
     data: { user },
     error: userError
-  } = await supabaseClient.auth.getUser();
+  } = await supabase.auth.getUser();
 
   if (userError || !user) {
     replyStatus.textContent =
@@ -527,8 +527,8 @@ replyForm.addEventListener("submit", async (event) => {
     return;
   }
 
-  const { error } = await supabaseClient
-    .from("venom_replies")
+  const { error } = await supabase
+  .from("venom_replies")
     .insert({
       post_id: replyForm.dataset.postId,
       author_id: user.id,
