@@ -484,6 +484,22 @@ async function loadReplies() {
   }
 
   for (const reply of replies) {
+    
+const { data: authorName, error: authorError } =
+  await supabase.rpc("venom_author_name", {
+    author_user_id: reply.author_id
+  });
+
+const replyAuthor = document.createElement("strong");
+
+replyAuthor.textContent =
+  authorError || !authorName
+    ? "Venom Member"
+    : authorName;
+
+replyAuthor.style.display = "block";
+replyAuthor.style.marginBottom = "6px";
+
     const replyItem = document.createElement("div");
     replyItem.style.cssText =
       "padding:12px;margin:10px 0;" +
@@ -496,7 +512,9 @@ async function loadReplies() {
     replyDate.textContent =
       new Date(reply.created_at).toLocaleString();
 
-    replyItem.append(replyText, replyDate);
+    
+replyItem.append(replyAuthor, replyText, replyDate);
+
     repliesList.append(replyItem);
   }
 }
