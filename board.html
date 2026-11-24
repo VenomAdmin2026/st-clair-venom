@@ -464,7 +464,9 @@ async function loadReplies() {
 
   const { data: replies, error } = await supabase
     .from("venom_replies")
-    .select("id, content, created_at")
+    
+.select("id, author_id, content, created_at")
+
     .eq("post_id", post.id)
     .order("created_at", { ascending: true });
 
