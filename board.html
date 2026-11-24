@@ -666,7 +666,43 @@ replyForm.addEventListener("submit", async (event) => {
                 repliesList,
                 replyForm
               );
+if (currentUserRole === "admin") {
+  const deletePostButton = document.createElement("button");
+  deletePostButton.type = "button";
+  deletePostButton.textContent = "Delete Discussion";
+  deletePostButton.style.marginTop = "10px";
+  deletePostButton.style.backgroundColor = "#b91c1c";
+  deletePostButton.style.color = "white";
+  deletePostButton.style.padding = "8px 12px";
+  deletePostButton.style.border = "none";
+  deletePostButton.style.borderRadius = "6px";
+  deletePostButton.style.cursor = "pointer";
 
+  deletePostButton.addEventListener("click", async () => {
+    const confirmed = confirm(
+      "Delete this discussion and all its replies? This cannot be undone."
+    );
+
+    if (!confirmed) return;
+
+    deletePostButton.disabled = true;
+
+    const { error } = await supabase
+      .from("venom_posts")
+      .delete()
+      .eq("id", post.id);
+
+    if (error) {
+      alert("Unable to delete discussion: " + error.message);
+      deletePostButton.disabled = false;
+      return;
+    }
+
+    await loadPosts();
+  });
+
+  article.appendChild(deletePostButton);
+}
               article.append(
   postAuthor,
   heading,
