@@ -12,7 +12,23 @@ const events = [
 ];
 const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const teamById=id=>teams.find(t=>t.id===id);
-document.getElementById('teamCards').innerHTML=teams.map(t=>`<article class="team-card"><div class="team-monogram">V</div><p class="eyebrow">${escapeHTML(t.age)} BASEBALL</p><h3>${escapeHTML(t.name)}</h3><p class="muted">${escapeHTML(t.season)}</p><button class="team-button" data-team="${escapeHTML(t.id)}">VIEW TEAM ↗</button></article>`).join('');
+
+const teamCards = document.getElementById('teamCards');
+
+if (teamCards) {
+  teamCards.innerHTML = teams.map(t => `
+    <article class="team-card">
+      <div class="team-monogram">V</div>
+      <p class="eyebrow">${escapeHTML(t.age)} BASEBALL</p>
+      <h3>${escapeHTML(t.name)}</h3>
+      <p class="muted">${escapeHTML(t.season)}</p>
+      <button class="team-button" data-team="${escapeHTML(t.id)}">
+        VIEW TEAM ↗
+      </button>
+    </article>
+  `).join('');
+}
+<div class="team-monogram">V</div><p class="eyebrow">${escapeHTML(t.age)} BASEBALL</p><h3>${escapeHTML(t.name)}</h3><p class="muted">${escapeHTML(t.season)}</p><button class="team-button" data-team="${escapeHTML(t.id)}">VIEW TEAM ↗</button></article>`).join('');
 const detail=document.getElementById('teamDetails');
 function showTeam(id){const t=teamById(id);if(!t)return;const te=events.filter(e=>e.teamId===id);detail.innerHTML=`<div class="section-head"><div><p class="eyebrow">TEAM PROFILE</p><h2>${escapeHTML(t.name)}</h2></div><button class="team-button" id="closeTeam">CLOSE ×</button></div><div class="team-info"><div><h3>COACHES</h3>${t.coaches.map(c=>`<p>${escapeHTML(c)}</p>`).join('')}</div><div><h3>ROSTER</h3>${t.players.length?t.players.map(pl=>`<p>#${escapeHTML(pl.number)} · ${escapeHTML(pl.name)} · ${escapeHTML(pl.position)}</p>`).join(''):'<p class="muted">Roster information coming soon.</p>'}</div><div><h3>UPCOMING EVENTS</h3>${te.length?te.map(e=>`<p>${escapeHTML(e.date)} · ${escapeHTML(e.title)}</p>`).join(''):'<p class="muted">Schedule coming soon.</p>'}</div></div>`;document.getElementById('closeTeam').addEventListener('click',()=>{detail.innerHTML='<p class="muted">Choose a team above to see its details.</p>'});detail.scrollIntoView({behavior:'smooth',block:'start'});}
 document.querySelectorAll('[data-team]').forEach(b=>b.addEventListener('click',()=>showTeam(b.dataset.team)));
