@@ -28,7 +28,7 @@ if (teamCards) {
     </article>
   `).join('');
 }
-<div class="team-monogram">V</div><p class="eyebrow">${escapeHTML(t.age)} BASEBALL</p><h3>${escapeHTML(t.name)}</h3><p class="muted">${escapeHTML(t.season)}</p><button class="team-button" data-team="${escapeHTML(t.id)}">VIEW TEAM ↗</button></article>`).join('');
+
 const detail = document.getElementById('teamDetails');
 function showTeam(id){
   if (!detail) return;
