@@ -223,8 +223,11 @@ loadVenomData().then(data => {
   }
 
   // Refresh the existing team cards with the JSON data.
-  document.querySelectorAll("#teamCards .team-card")
-    .forEach((card, index) => {
+  const teamCardElements = document.querySelectorAll(
+  "#teamCards .team-card"
+);
+
+teamCardElements.forEach((card, index) => {
       const team = teams[index];
       if (!team) return;
 
@@ -236,7 +239,7 @@ loadVenomData().then(data => {
     });
 
   // Refresh team names in the existing dropdowns.
-  for (const select of [hubTeam, paymentTeam]) {
+  for (const select of [hubTeam, paymentTeam]) {if (!select) continue;
     for (const option of select.options) {
       const team = teamById(option.value);
       if (team) option.textContent = team.name;
