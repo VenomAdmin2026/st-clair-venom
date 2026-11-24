@@ -101,7 +101,43 @@ if (videoId && /^[A-Za-z0-9_-]{11}$/.test(videoId)) {
     thumbnail.remove();
   });
 
-  panel.appendChild(thumbnail);
+  
+thumbnail.style.cursor = "pointer";
+thumbnail.title = "Click to play video";
+
+const playButton = document.createElement("button");
+playButton.type = "button";
+playButton.className = "btn";
+playButton.textContent = "▶ PLAY VIDEO";
+playButton.style.width = "100%";
+playButton.style.marginBottom = "15px";
+
+function playVideo() {
+  const player = document.createElement("iframe");
+
+  player.src =
+    `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
+
+  player.title = video.title;
+  player.style.width = "100%";
+  player.style.aspectRatio = "16 / 9";
+  player.style.border = "0";
+  player.style.borderRadius = "10px";
+  player.style.marginBottom = "15px";
+
+  player.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+  player.allowFullscreen = true;
+
+  thumbnail.replaceWith(player);
+  playButton.remove();
+}
+
+thumbnail.addEventListener("click", playVideo);
+playButton.addEventListener("click", playVideo);
+
+panel.appendChild(thumbnail);
+panel.appendChild(playButton);
+
 }
 
 panel.append(title, details, description, link);
