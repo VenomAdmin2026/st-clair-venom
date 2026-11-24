@@ -458,7 +458,49 @@ newPostMessage.textContent =
 
               repliesList.dataset.postId = post.id;
 
-              
+  
+async function loadReplies() {
+  repliesList.textContent = "Loading replies...";
+
+  const { data: replies, error } = await supabase
+    .from("venom_replies")
+    .select("id, content, created_at")
+    .eq("post_id", post.id)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error("Load replies error:", error);
+    repliesList.textContent = "Unable to load replies.";
+    return;
+  }
+
+  repliesList.replaceChildren();
+
+  if (!replies || replies.length === 0) {
+    repliesList.textContent = "No replies yet.";
+    return;
+  }
+
+  for (const reply of replies) {
+    const replyItem = document.createElement("div");
+    replyItem.style.cssText =
+      "padding:12px;margin:10px 0;" +
+      "border:1px solid #555;border-radius:8px;";
+
+    const replyText = document.createElement("p");
+    replyText.textContent = reply.content;
+
+    const replyDate = document.createElement("small");
+    replyDate.textContent =
+      new Date(reply.created_at).toLocaleString();
+
+    replyItem.append(replyText, replyDate);
+    repliesList.append(replyItem);
+  }
+}
+
+loadReplies();
+            
 const replyForm =
   document.createElement("form");
 
