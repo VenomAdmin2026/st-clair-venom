@@ -94,7 +94,18 @@ const teamServices = {
 };
 const safeURL=(url,hosts)=>{try{const u=new URL(url);return u.protocol==='https:'&&hosts.some(h=>u.hostname===h||u.hostname.endsWith('.'+h))?u.href:null}catch{return null}};
 const hubTeam=document.getElementById('hubTeam');const paymentTeam=document.getElementById('paymentTeam');
-for(const t of teams){for(const select of [hubTeam,paymentTeam]){const opt=document.createElement('option');opt.value=t.id;opt.textContent=t.name;select.append(opt)}}
+
+for (const t of teams) {
+  for (const select of [hubTeam, paymentTeam]) {
+    if (!select) continue;
+
+    const opt = document.createElement('option');
+    opt.value = t.id;
+    opt.textContent = t.name;
+    select.append(opt);
+  }
+}
+
 function renderHub(){const id=hubTeam.value;const filtered=hubEvents.filter(e=>id==='all'||e.teamId===id);document.getElementById('hubSchedules').innerHTML=filtered.length?filtered.map(e=>`<div class="hub-entry"><strong>${escapeHTML(e.type)} · ${escapeHTML(e.date)}</strong><p>${escapeHTML(e.title)} — ${escapeHTML(e.location)}</p></div>`).join(''):'<p class="muted">No events posted yet.</p>';
 const vids=hubResources.filter(v=>v.teamId==='all'||id==='all'||v.teamId===id);document.getElementById('hubVideos').innerHTML=vids.map(v=>{const url=safeURL(v.url,['youtube.com','youtu.be']);return `<div class="hub-entry"><strong>${escapeHTML(v.category)}</strong><p>${url?`<a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(v.title)} ↗</a>`:escapeHTML(v.title)}</p></div>`}).join('')||'<p class="muted">No videos posted yet.</p>';
 const ids=id==='all'?teams.map(t=>t.id):[id];document.getElementById('hubLinks').innerHTML=ids.map(k=>{const t=teamById(k),s=teamServices[k]||{};return `<div class="hub-entry"><strong>${escapeHTML(t.name)}</strong><p>${[['GameChanger',safeURL(s.gamechanger,['gc.com','gamechanger.io'])],['USSSA',safeURL(s.usssa,['usssa.com'])]].map(([name,url])=>url?`<a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">${name} ↗</a>`:`${name}: link coming soon`).join(' · ')}</p></div>`}).join('')}
