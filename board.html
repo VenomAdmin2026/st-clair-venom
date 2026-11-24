@@ -458,10 +458,15 @@ newPostMessage.textContent =
 
               repliesList.dataset.postId = post.id;
 
-              const replyForm =
-                document.createElement("form");
+              
+const replyForm =
+  document.createElement("form");
 
-              replyForm.style.marginTop = "15px";
+// Identify which discussion this reply belongs to.
+replyForm.dataset.postId = post.id;
+
+replyForm.style.marginTop = "15px";
+
 
               const replyInput =
                 document.createElement("textarea");
