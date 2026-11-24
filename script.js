@@ -143,7 +143,7 @@ const hybridSettings = {
   }
 };
 function verifiedExternal(url, hosts) { return safeURL(url, hosts); }
-function renderHybrid() {
+function renderHybrid() {  if (!hubTeam) return;
   const id = hubTeam.value;
   const cal = id === 'all' ? hybridSettings.organizationCalendar : hybridSettings.teamCalendars[id];
   const calUrl = verifiedExternal(cal, ['calendar.google.com']);
