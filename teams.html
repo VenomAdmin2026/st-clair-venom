@@ -39,48 +39,70 @@
     </nav>
   </header>
 
-  <main>
-    <section id="teams" class="section">
-      <div class="wrap">
-        <h1>OUR TEAMS</h1>
-        <p class="muted">
-          Explore the teams that make up the
-          St. Clair Venom travel baseball organization.
-        </p>
-
-        <h2>8U VENOM</h2>
-        <p>
-          Our 8U team focuses on developing fundamental
-          baseball skills, teamwork, confidence,
-          and a love for the game.
-        </p>
-
-        <h2>14U VENOM</h2>
-        <p>
-          Our 14U team emphasizes advanced player development,
-          competitive baseball, leadership,
-          and preparation for the next level.
-        </p>
-
-        <h2>TEAM COMMUNICATION</h2>
-        <p>
-          Approved parents, coaches, and administrators
-          can access their authorized team discussions
-          through our private forum.
-        </p>
-
-        <a class="btn" href="board.html">
-          ACCESS PRIVATE DISCUSSION FORUM
-        </a>
-
-        <p>
-          <a class="btn" href="index.html">
-            BACK TO HOME
-          </a>
-        </p>
+  
+<main>
+  <section id="teams" class="section dark">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">ONE ORGANIZATION • MANY TEAMS</p>
+        <h1>OUR <span>TEAMS.</span></h1>
       </div>
-    </section>
-  </main>
+      <p class="muted">
+        Select an age group to view its roster, staff,
+        and upcoming events. Currently featuring
+        Venom 8U and Venom 14U.
+      </p>
+    </div>
+
+    <div id="teamCards" class="team-grid"></div>
+
+    <div
+      id="teamDetails"
+      class="team-details"
+      aria-live="polite"
+    >
+      <p class="muted">
+        Choose a team above to see its details.
+      </p>
+    </div>
+
+    <div id="venom14uGallery" class="venom-gallery" hidden>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">ST. CLAIR VENOM 14U</p>
+          <h2>TEAM <span>GALLERY.</span></h2>
+          <p class="muted">
+            Game days, big plays, and Venom memories.
+          </p>
+        </div>
+      </div>
+
+      <div id="venom14uPhotos" class="venom-photo-grid"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="eyebrow">TEAM COMMUNICATION</p>
+    <h2>ONE TEAM. <span>ONE VENOM.</span></h2>
+
+    <p>
+      Approved parents, coaches, and administrators
+      can access their authorized team discussions
+      through our private forum.
+    </p>
+
+    <a class="btn" href="board.html">
+      ACCESS PRIVATE DISCUSSION FORUM ↗
+    </a>
+
+    <p>
+      <a class="text-link" href="index.html">
+        BACK TO HOME →
+      </a>
+    </p>
+  </section>
+</main>
+
 
   <script src="script.js"></script>
 </body>
