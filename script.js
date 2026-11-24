@@ -176,7 +176,9 @@ function renderHybrid() {  if (!hubTeam) return;
     ? `<h4>Organization announcements</h4>${link(organization, 'OPEN ORGANIZATION ANNOUNCEMENTS')}<p class="muted">Choose a team above for family and coaches-only groups.</p>`
     : `<h4>Organization announcements</h4>${link(organization, 'OPEN ORGANIZATION ANNOUNCEMENTS')}<h4>Team family discussion</h4>${link(family, 'OPEN FAMILY DISCUSSION')}<h4>Coaches-only planning</h4>${link(coaches, 'OPEN COACHES HUB')}<p class="muted">Coaches Hub access is restricted by the group's membership settings. A visible link does not grant access.</p>`;
 }
-hubTeam.addEventListener('change', renderHybrid);
+if (hubTeam) {
+  hubTeam.addEventListener('change', renderHybrid);
+}
 renderHybrid();
 
 async function loadVenomData() {
