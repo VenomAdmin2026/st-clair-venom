@@ -1,0 +1,164 @@
+
+/* VENOM CALENDAR THEME */
+
+#venomCalendar {
+  margin-top: 24px;
+
+  --fc-border-color: #34343e;
+  --fc-page-bg-color: #101015;
+  --fc-neutral-bg-color: #202028;
+  --fc-neutral-text-color: #b5b5be;
+  --fc-today-bg-color: rgba(163, 230, 53, 0.09);
+
+  --fc-button-text-color: #ffffff;
+  --fc-button-bg-color: #262630;
+  --fc-button-border-color: #44444f;
+  --fc-button-hover-bg-color: #7138a8;
+  --fc-button-hover-border-color: #9333ea;
+  --fc-button-active-bg-color: #7138a8;
+  --fc-button-active-border-color: #9333ea;
+
+  color: #ffffff;
+  font-size: 14px;
+}
+
+#venomCalendar .fc-toolbar-title {
+  color: #a3e635;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+#venomCalendar .fc-col-header-cell {
+  background: #24242e;
+}
+
+#venomCalendar .fc-col-header-cell-cushion {
+  color: #ffffff;
+  padding: 12px 4px;
+}
+
+#venomCalendar .fc-daygrid-day {
+  background-color: #17171e;
+}
+
+#venomCalendar .fc-daygrid-day-number {
+  color: #ffffff;
+  padding: 8px;
+}
+
+#venomCalendar .fc-day-today {
+  background-color: rgba(163, 230, 53, 0.09);
+}
+
+#venomCalendar .fc-day-today .fc-daygrid-day-number {
+  color: #a3e635;
+  font-weight: 800;
+}
+
+#venomCalendar .fc-event {
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 3px;
+  font-weight: 600;
+}
+
+#venomCalendar .fc-daygrid-event {
+  white-space: normal;
+}
+
+#venomCalendar .fc-list-day-cushion {
+  background: #24242e;
+}
+
+#venomCalendar .fc-list-event:hover td {
+  background: #30303b;
+}
+
+#venomCalendar .fc-more-link {
+  color: #a3e635;
+}
+
+#venomCalendar .fc-popover {
+  background: #202028;
+  border-color: #44444f;
+}
+
+#venomCalendar .fc-popover-header {
+  background: #30303b;
+}
+
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 24px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.legend-organization {
+  color: #9ca3af;
+}
+
+.legend-8u {
+  color: #c084fc;
+}
+
+.legend-14u {
+  color: #a3e635;
+}
+
+#calendarAdminControls {
+  margin: 16px 0;
+}
+
+#calendarAdminControls[hidden] {
+  display: none !important;
+}
+
+#calendarStatus {
+  margin: 12px 0;
+}
+
+#calendarEventDetails {
+  scroll-margin-top: 100px;
+}
+
+/* MOBILE CALENDAR */
+
+@media (max-width: 768px) {
+
+  #venomCalendar {
+    font-size: 11px;
+  }
+
+  #venomCalendar .fc-toolbar {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  #venomCalendar .fc-toolbar-title {
+    font-size: 1.25rem;
+  }
+
+  #venomCalendar .fc-button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  #venomCalendar .fc-daygrid-day-number {
+    padding: 4px;
+  }
+
+  #venomCalendar .fc-event {
+    font-size: 10px;
+    padding: 2px;
+  }
+
+  .calendar-legend {
+    gap: 12px;
+    font-size: 12px;
+  }
+}
