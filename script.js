@@ -89,9 +89,16 @@ const hubResources = [
  {teamId:'all',category:'Hitting',title:'Coach-selected hitting video (add link)',url:''},
  {teamId:'all',category:'Conditioning',title:'Coach-selected workout routine (add link)',url:''}
 ];
+
 const teamServices = {
- // 'venom-14u': {gamechanger:'https://...',usssa:'https://...',venmo:'https://venmo.com/u/USERNAME',qr:'images/venmo-14u.png'}
+  'venom-8u': {
+    venmo: 'https://venmo.com/code?user_id=2563340886867968378&created=1795565112'
+  },
+  'venom-14u': {
+    venmo: 'https://venmo.com/code?user_id=2563340886867968378&created=1795565112'
+  }
 };
+
 const safeURL=(url,hosts)=>{try{const u=new URL(url);return u.protocol==='https:'&&hosts.some(h=>u.hostname===h||u.hostname.endsWith('.'+h))?u.href:null}catch{return null}};
 const hubTeam=document.getElementById('hubTeam');const paymentTeam=document.getElementById('paymentTeam');
 
