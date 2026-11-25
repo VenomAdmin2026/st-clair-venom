@@ -32,6 +32,49 @@ async function testCalendarConnection() {
 
 testCalendarConnection();
 
+async function checkCalendarAdmin() {
+
+  const adminControls =
+    document.getElementById("calendarAdminControls");
+
+  adminControls.hidden = true;
+
+  const { data: { user }, error: authError } =
+    await supabase.auth.getUser();
+
+  if (authError || !user) {
+    console.log("Calendar access: Public visitor");
+    return false;
+  }
+
+  const { data: profile, error } = await supabase
+    .from("venom_profiles")
+    .select("role, approved")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (error || !profile) {
+    console.log("Calendar access: Public viewing only");
+    return false;
+  }
+
+  const isAdmin =
+    profile.approved === true &&
+    profile.role === "admin";
+
+  adminControls.hidden = !isAdmin;
+
+  console.log(
+    isAdmin
+      ? "Calendar access: Authorized administrator"
+      : "Calendar access: Read only"
+  );
+
+  return isAdmin;
+
+}
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -169,6 +212,7 @@ textColor:
   });
 
   calendar.render();
+  checkCalendarAdmin();
   document.getElementById("calendarTeam")
   .addEventListener("change", () => {
     calendar.refetchEvents();
