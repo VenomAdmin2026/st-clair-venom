@@ -36,5 +36,18 @@
       "dateAdded": "2026-11-23"
     }
   ],
-  "tryoutAnnouncements": []
+  "tryoutAnnouncements": [
+    {
+      "team": "14U",
+      "postedDate": "2026-11-24",
+      "title": "Join 14U Venom",
+      "announcement": "Come tryout for St Clair Venom! Join the Team!",
+      "expirationDate": "2027-01-31",
+      "category": "Tryouts",
+      "tryoutDate": "2026-12-06",
+      "tryoutTime": "3:00 PM",
+      "location": "Dillard Park/Margaret, AL",
+      "registrationLink": ""
+    }
+  ]
 }
