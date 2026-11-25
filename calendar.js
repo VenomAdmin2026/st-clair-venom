@@ -282,6 +282,94 @@ function openCreateEvent(selectedDate) {
 
 }
 
+function openEditEvent(calendarEvent) {
+
+  eventForm.reset();
+
+  const field = id =>
+    document.getElementById(id);
+
+  const props = calendarEvent.extendedProps;
+  const DateTime = luxon.DateTime;
+  const zone = "America/Chicago";
+
+  field("calendarEventId").value = calendarEvent.id;
+
+  field("calendarFormTitle").textContent =
+    "EDIT EVENT";
+
+  field("calendarFormMessage").textContent = "";
+  field("calendarFormMessage").className = "";
+
+  field("eventTitle").value = calendarEvent.title;
+  field("eventTeam").value = props.team;
+  field("eventType").value = props.eventType;
+  field("eventAllDay").checked = calendarEvent.allDay;
+
+  field("eventLocation").value = props.location || "";
+  field("eventDescription").value = props.description || "";
+  field("eventStatus").value = props.status || "Scheduled";
+
+  if (calendarEvent.allDay) {
+
+    const start = DateTime.fromISO(
+      calendarEvent.startStr,
+      { zone }
+    );
+
+    const end = calendarEvent.endStr
+      ? DateTime.fromISO(
+          calendarEvent.endStr,
+          { zone }
+        ).minus({ days: 1 })
+      : start;
+
+    field("eventStartDate").value = start.toISODate();
+    field("eventEndDate").value = end.toISODate();
+
+    field("eventStartTime").value = "";
+    field("eventEndTime").value = "";
+
+  } else {
+
+    const start = DateTime.fromJSDate(
+      calendarEvent.start,
+      { zone }
+    );
+
+    const end = calendarEvent.end
+      ? DateTime.fromJSDate(
+          calendarEvent.end,
+          { zone }
+        )
+      : start.plus({ hours: 1 });
+
+    field("eventStartDate").value = start.toISODate();
+    field("eventStartTime").value = start.toFormat("HH:mm");
+
+    field("eventEndDate").value = end.toISODate();
+    field("eventEndTime").value = end.toFormat("HH:mm");
+
+  }
+
+  field("deleteCalendarEvent").hidden = true;
+
+  updateEventTimeFields();
+
+  if (!eventDialog.open) {
+    eventDialog.showModal();
+  }
+
+}
+calendar.on("eventClick", async info => {
+
+  if (await checkCalendarAdmin()) {
+
+    openEditEvent(info.event);
+
+  }
+
+});
 document.getElementById("addCalendarEvent")
   .addEventListener("click", async () => {
 
@@ -339,9 +427,7 @@ eventForm.addEventListener("submit", async event => {
       throw new Error("Administrator access required.");
     }
 
-    if (value("calendarEventId")) {
-      throw new Error("Event editing is not enabled yet.");
-    }
+    const eventId = value("calendarEventId");
 
     const allDay =
       document.getElementById("eventAllDay").checked;
@@ -411,7 +497,14 @@ eventForm.addEventListener("submit", async event => {
       status: value("eventStatus")
     };
 
-    const { error } = await supabase
+    const { error } = eventId
+  ? await supabase
+      .from("venom_calendar_events")
+      .update(eventData)
+      .eq("id", eventId)
+      .select("id")
+      .single()
+  : await supabase
       .from("venom_calendar_events")
       .insert(eventData);
 
