@@ -352,7 +352,7 @@ function openEditEvent(calendarEvent) {
 
   }
 
-  field("deleteCalendarEvent").hidden = true;
+  field("deleteCalendarEvent").hidden = false;
 
   updateEventTimeFields();
 
@@ -370,6 +370,58 @@ calendar.on("eventClick", async info => {
   }
 
 });
+  document.getElementById("deleteCalendarEvent")
+  .addEventListener("click", async () => {
+
+    if (!(await checkCalendarAdmin())) {
+      return;
+    }
+
+    const eventId =
+      document.getElementById("calendarEventId").value;
+
+    if (!eventId) {
+      return;
+    }
+
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this event? " +
+      "This action cannot be undone."
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    const deleteButton =
+      document.getElementById("deleteCalendarEvent");
+
+    deleteButton.disabled = true;
+
+    try {
+      const { error } = await supabase
+        .from("venom_calendar_events")
+        .delete()
+        .eq("id", eventId)
+        .select("id")
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      eventDialog.close();
+      calendar.refetchEvents();
+
+    } catch (error) {
+      console.error("Calendar deletion failed:", error);
+      alert("Unable to delete event: " + error.message);
+
+    } finally {
+      deleteButton.disabled = false;
+    }
+
+  });
 document.getElementById("addCalendarEvent")
   .addEventListener("click", async () => {
 
