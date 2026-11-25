@@ -316,14 +316,129 @@ document.getElementById("eventStartDate")
 
   });
 
-eventForm.addEventListener("submit", event => {
+
+eventForm.addEventListener("submit", async event => {
 
   event.preventDefault();
 
-  document.getElementById("calendarFormMessage").textContent =
-    "Event saving will be enabled in the next step.";
+  const message =
+    document.getElementById("calendarFormMessage");
+
+  const saveButton =
+    document.getElementById("saveCalendarEvent");
+
+  const value = id =>
+    document.getElementById(id).value;
+
+  saveButton.disabled = true;
+  message.textContent = "Saving event...";
+
+  try {
+
+    if (!(await checkCalendarAdmin())) {
+      throw new Error("Administrator access required.");
+    }
+
+    if (value("calendarEventId")) {
+      throw new Error("Event editing is not enabled yet.");
+    }
+
+    const allDay =
+      document.getElementById("eventAllDay").checked;
+
+    const startDate = value("eventStartDate");
+    const endDate = value("eventEndDate") || startDate;
+
+    const DateTime = luxon.DateTime;
+    const zone = "America/Chicago";
+
+    let start;
+    let end;
+
+    if (allDay) {
+
+      start = DateTime.fromISO(startDate, { zone });
+
+      end = DateTime.fromISO(endDate, { zone })
+        .plus({ days: 1 });
+
+    } else {
+
+      const startTime = value("eventStartTime");
+      const endTime = value("eventEndTime");
+
+      if (!startTime) {
+        throw new Error("Please enter a start time.");
+      }
+
+      start = DateTime.fromISO(
+        startDate + "T" + startTime,
+        { zone }
+      );
+
+      end = endTime
+        ? DateTime.fromISO(
+            endDate + "T" + endTime,
+            { zone }
+          )
+        : start.plus({ hours: 1 });
+
+    }
+
+    if (!start.isValid || !end.isValid) {
+      throw new Error("Please enter valid event dates.");
+    }
+
+    if (end <= start) {
+      throw new Error("End must be after start.");
+    }
+
+    const title = value("eventTitle").trim();
+
+    if (!title) {
+      throw new Error("Please enter an event title.");
+    }
+
+    const eventData = {
+      title: title,
+      team: value("eventTeam"),
+      event_type: value("eventType"),
+      start_at: start.toUTC().toISO(),
+      end_at: end.toUTC().toISO(),
+      all_day: allDay,
+      location: value("eventLocation").trim(),
+      description: value("eventDescription").trim(),
+      status: value("eventStatus")
+    };
+
+    const { error } = await supabase
+      .from("venom_calendar_events")
+      .insert(eventData);
+
+    if (error) {
+      throw error;
+    }
+
+    message.textContent = "Event saved successfully.";
+
+    eventDialog.close();
+    calendar.refetchEvents();
+
+  } catch (error) {
+
+    console.error("Calendar save error:", error);
+
+    message.textContent =
+      error.message || "Unable to save event.";
+
+  } finally {
+
+    saveButton.disabled = false;
+
+  }
 
 });
+
 
   document.getElementById("calendarTeam")
   .addEventListener("change", () => {
