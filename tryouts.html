@@ -8,6 +8,13 @@
   <meta name="description" content="St. Clair Venom travel baseball tryouts, registration, and team opportunities.">
   <title>Tryouts | St. Clair Venom</title>
   <link rel="stylesheet" href="style.css">
+  
+<script
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+  async
+  defer>
+</script>
+
 </head>
 <body>
 
@@ -160,24 +167,196 @@
     </p>
   </section>
 
-  <section class="section">
-    <p class="eyebrow">TAKE THE NEXT STEP</p>
-    <h2>TRYOUT <span>REGISTRATION.</span></h2>
+  
+<section class="section" id="registration">
+  <p class="eyebrow">TAKE THE NEXT STEP</p>
+  <h2>PLAYER <span>REGISTRATION.</span></h2>
+
+  <p>
+    Ready to compete with St. Clair Venom?
+    Select your age group and registration opportunity below.
+  </p>
+
+  <div class="hub-grid">
 
     <div class="hub-panel">
-      <h3>PLAYER REGISTRATION</h3>
-      <p>
-        Registration information will be available
-        when official tryouts are announced.
-      </p>
-      <p class="muted">
-        Online registration is not currently available.
-      </p>
-      <a class="btn" href="index.html#contact">
-        CONTACT THE ORGANIZATION ↗
-      </a>
+      <p class="eyebrow">JOIN THE VENOM</p>
+      <h3>8U TRYOUTS</h3>
+      <p>Register for upcoming 8U tryout opportunities.</p>
+      <button type="button" class="btn"
+        data-age-group="8U"
+        data-registration-type="tryout"
+        disabled>
+        REGISTER FOR TRYOUTS
+      </button>
     </div>
-  </section>
+
+    <div class="hub-panel">
+      <p class="eyebrow">JOIN THE VENOM</p>
+      <h3>14U TRYOUTS</h3>
+      <p>Register for upcoming 14U tryout opportunities.</p>
+      <button type="button" class="btn"
+        data-age-group="14U"
+        data-registration-type="tryout"
+        disabled>
+        REGISTER FOR TRYOUTS
+      </button>
+    </div>
+
+    <div class="hub-panel">
+      <p class="eyebrow">PLAYER OPPORTUNITIES</p>
+      <h3>8U PICK-UP PLAYERS</h3>
+      <p>Express interest in available 8U pick-up player opportunities.</p>
+      <button type="button" class="btn"
+        data-age-group="8U"
+        data-registration-type="pickup"
+        disabled>
+        REGISTER AS PICK-UP PLAYER
+      </button>
+    </div>
+
+    <div class="hub-panel">
+      <p class="eyebrow">PLAYER OPPORTUNITIES</p>
+      <h3>14U PICK-UP PLAYERS</h3>
+      <p>Express interest in available 14U pick-up player opportunities.</p>
+      <button type="button" class="btn"
+        data-age-group="14U"
+        data-registration-type="pickup"
+        disabled>
+        REGISTER AS PICK-UP PLAYER
+      </button>
+    </div>
+
+  </div>
+
+  <p class="muted">
+    Registration must be completed by a parent or legal
+    guardian. Registration does not guarantee a roster
+    position or playing opportunity.
+  </p>
+
+<div id="registrationFormPanel" class="hub-panel" hidden>
+
+  <h3 id="registrationFormTitle">PLAYER REGISTRATION</h3>
+
+  <form id="venomRegistrationForm">
+
+    <input type="hidden" name="age_group" id="registrationAgeGroup">
+
+    <input type="hidden" name="registration_type"
+      id="registrationType">
+
+    <h3>PLAYER INFORMATION</h3>
+
+    <label for="playerName">Player Name *</label>
+    <input type="text" id="playerName"
+      name="player_name" maxlength="100" required>
+
+    <label for="primaryPosition">Primary Position</label>
+    <select id="primaryPosition" name="primary_position">
+      <option value="">Select position</option>
+      <option>Pitcher</option>
+      <option>Catcher</option>
+      <option>First Base</option>
+      <option>Second Base</option>
+      <option>Third Base</option>
+      <option>Shortstop</option>
+      <option>Outfield</option>
+      <option>Utility</option>
+    </select>
+
+    <label for="secondaryPosition">Secondary Position</label>
+    <select id="secondaryPosition" name="secondary_position">
+      <option value="">Select position</option>
+      <option>Pitcher</option>
+      <option>Catcher</option>
+      <option>First Base</option>
+      <option>Second Base</option>
+      <option>Third Base</option>
+      <option>Shortstop</option>
+      <option>Outfield</option>
+      <option>Utility</option>
+    </select>
+
+    <label for="playerBats">Bats</label>
+    <select id="playerBats" name="bats">
+      <option value="">Select</option>
+      <option>Right</option>
+      <option>Left</option>
+      <option>Switch</option>
+    </select>
+
+    <label for="playerThrows">Throws</label>
+    <select id="playerThrows" name="throws">
+      <option value="">Select</option>
+      <option>Right</option>
+      <option>Left</option>
+    </select>
+
+    <label for="currentTeam">Current Team (if applicable)</label>
+    <input type="text" id="currentTeam"
+      name="current_team" maxlength="100">
+
+    <label for="playerAvailability">Availability</label>
+    <textarea id="playerAvailability"
+      name="availability" maxlength="500" rows="3"></textarea>
+
+    <h3>PARENT / GUARDIAN INFORMATION</h3>
+
+    <label for="guardianName">Parent / Guardian Name *</label>
+    <input type="text" id="guardianName"
+      name="guardian_name" maxlength="100" required>
+
+    <label for="guardianEmail">Email Address *</label>
+    <input type="email" id="guardianEmail"
+      name="guardian_email" maxlength="254" required>
+
+    <label for="guardianPhone">Phone Number *</label>
+    <input type="tel" id="guardianPhone"
+      name="guardian_phone" maxlength="30" required>
+
+    <label for="additionalInformation">
+      Additional Baseball Information
+    </label>
+
+    <textarea id="additionalInformation"
+      name="additional_information"
+      maxlength="1000" rows="4"></textarea>
+
+    <p class="muted">
+      Please do not include medical information,
+      home addresses, or other sensitive personal information.
+    </p>
+
+    <label class="registration-consent">
+      <input type="checkbox" id="guardianConsent"
+        name="guardian_consent" required>
+      I confirm that I am the player's parent or legal
+      guardian and authorize St. Clair Venom to contact
+      me regarding this registration.
+    </label>
+
+    <div id="registrationTurnstile"></div>
+
+    <p id="registrationMessage" role="status"
+      aria-live="polite"></p>
+
+    <button type="button" class="btn"
+      id="submitRegistration" disabled>
+      SUBMIT REGISTRATION
+    </button>
+
+    <button type="button" class="btn"
+      id="cancelRegistration">
+      CANCEL
+    </button>
+
+  </form>
+
+</div>
+
+</section>
+
 
   <section class="section dark">
     <p class="eyebrow">COMMON QUESTIONS</p>
@@ -240,5 +419,8 @@
 
 <script src="script.js"></script>
 <script src="tryouts.js"></script>
+  
+<script type="module" src="registration.js"></script>
+
 </body>
 </html>
