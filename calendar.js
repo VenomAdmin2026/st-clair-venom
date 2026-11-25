@@ -122,6 +122,13 @@ timeZone: "America/Chicago",
     editable: false,
 
     selectable: false,
+    dateClick: async function(info) {
+
+  if (await checkCalendarAdmin()) {
+    openCreateEvent(info.dateStr.slice(0, 10));
+  }
+
+},
 
     displayEventTime: true,
 
@@ -213,6 +220,111 @@ textColor:
 
   calendar.render();
   checkCalendarAdmin();
+  
+const eventDialog =
+  document.getElementById("calendarEventDialog");
+
+const eventForm =
+  document.getElementById("calendarEventForm");
+
+function updateEventTimeFields() {
+
+  const allDay =
+    document.getElementById("eventAllDay").checked;
+
+  document.getElementById("eventStartTimeGroup").hidden = allDay;
+
+  document.getElementById("eventEndTimeGroup").hidden = allDay;
+
+  document.getElementById("eventStartTime").required = !allDay;
+
+}
+
+function openCreateEvent(selectedDate) {
+
+  eventForm.reset();
+
+  document.getElementById("calendarEventId").value = "";
+
+  document.getElementById("calendarFormTitle").textContent =
+    "CREATE EVENT";
+
+  document.getElementById("calendarFormMessage").textContent = "";
+
+  document.getElementById("calendarFormMessage").className = "";
+
+  document.getElementById("deleteCalendarEvent").hidden = true;
+
+  const defaultDate = selectedDate ||
+    luxon.DateTime.now()
+      .setZone("America/Chicago")
+      .toISODate();
+
+  document.getElementById("eventStartDate").value = defaultDate;
+
+  document.getElementById("eventEndDate").value = defaultDate;
+
+  const selectedTeam =
+    document.getElementById("calendarTeam").value;
+
+  document.getElementById("eventTeam").value =
+    selectedTeam === "all"
+      ? "Organization"
+      : selectedTeam;
+
+  document.getElementById("eventStatus").value = "Scheduled";
+
+  updateEventTimeFields();
+
+  if (!eventDialog.open) {
+    eventDialog.showModal();
+  }
+
+}
+
+document.getElementById("addCalendarEvent")
+  .addEventListener("click", async () => {
+
+    if (await checkCalendarAdmin()) {
+      openCreateEvent();
+    }
+
+  });
+
+document.getElementById("closeCalendarEvent")
+  .addEventListener("click", () => {
+
+    eventDialog.close();
+
+  });
+
+document.getElementById("eventAllDay")
+  .addEventListener("change", updateEventTimeFields);
+
+document.getElementById("eventStartDate")
+  .addEventListener("change", () => {
+
+    const startDate =
+      document.getElementById("eventStartDate").value;
+
+    const endDate =
+      document.getElementById("eventEndDate");
+
+    if (!endDate.value || endDate.value < startDate) {
+      endDate.value = startDate;
+    }
+
+  });
+
+eventForm.addEventListener("submit", event => {
+
+  event.preventDefault();
+
+  document.getElementById("calendarFormMessage").textContent =
+    "Event saving will be enabled in the next step.";
+
+});
+
   document.getElementById("calendarTeam")
   .addEventListener("change", () => {
     calendar.refetchEvents();
