@@ -166,6 +166,97 @@
 
   </section>
 
+<dialog id="calendarEventDialog" class="calendar-dialog">
+
+  <form id="calendarEventForm">
+
+    <h2 id="calendarFormTitle">CREATE EVENT</h2>
+
+    <p class="muted">
+      Enter the event information below.
+      All times are Central Time.
+      Only enter information approved for public viewing.
+    </p>
+
+    <input type="hidden" id="calendarEventId">
+
+    <label for="eventTitle">Event Title *</label>
+    <input type="text" id="eventTitle" maxlength="120" required>
+
+    <label for="eventTeam">Team *</label>
+    <select id="eventTeam" required>
+      <option value="Organization">Organization</option>
+      <option value="8U">Venom 8U</option>
+      <option value="14U">Venom 14U</option>
+    </select>
+
+    <label for="eventType">Event Type *</label>
+    <select id="eventType" required>
+      <option value="Practice">Practice</option>
+      <option value="Workout">Workout</option>
+      <option value="Game">Game</option>
+      <option value="Tournament">Tournament</option>
+      <option value="Tryout">Tryout</option>
+      <option value="Meeting">Meeting</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label class="calendar-checkbox">
+      <input type="checkbox" id="eventAllDay">
+      All-day event
+    </label>
+
+    <label for="eventStartDate">Start Date *</label>
+    <input type="date" id="eventStartDate" required>
+
+    <div id="eventStartTimeGroup">
+      <label for="eventStartTime">Start Time</label>
+      <input type="time" id="eventStartTime">
+    </div>
+
+    <label for="eventEndDate">End Date</label>
+    <input type="date" id="eventEndDate">
+
+    <div id="eventEndTimeGroup">
+      <label for="eventEndTime">End Time</label>
+      <input type="time" id="eventEndTime">
+    </div>
+
+    <label for="eventLocation">Location</label>
+    <input type="text" id="eventLocation" maxlength="200">
+
+    <label for="eventDescription">Event Details</label>
+    <textarea id="eventDescription" rows="4" maxlength="2000"></textarea>
+
+    <label for="eventStatus">Event Status</label>
+    <select id="eventStatus">
+      <option value="Scheduled">Scheduled</option>
+      <option value="Cancelled">Cancelled</option>
+      <option value="Postponed">Postponed</option>
+    </select>
+
+    <p id="calendarFormMessage" role="status" aria-live="polite"></p>
+
+    <div class="calendar-form-actions">
+
+      <button type="submit" class="btn" id="saveCalendarEvent">
+        SAVE EVENT
+      </button>
+
+      <button type="button" class="btn outline" id="closeCalendarEvent">
+        CLOSE
+      </button>
+
+      <button type="button" class="btn" id="deleteCalendarEvent" hidden>
+        DELETE EVENT
+      </button>
+
+    </div>
+
+  </form>
+
+</dialog>
+
 </main>
 
 <footer>
