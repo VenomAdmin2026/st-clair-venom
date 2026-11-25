@@ -90,7 +90,57 @@ timeZone: "America/Chicago",
 
     noEventsContent: "No scheduled events.",
 
-    events: []
+    
+events: async function(fetchInfo, successCallback, failureCallback) {
+
+  const { data, error } = await supabase
+    .from("venom_calendar_events")
+    .select("*")
+    .order("start_at", { ascending: true });
+
+  if (error) {
+    console.error("Unable to load calendar events:", error.message);
+    calendarStatus.textContent = "Unable to load calendar events.";
+    failureCallback(error);
+    return;
+  }
+
+  const calendarEvents = data.map(event => ({
+
+    id: event.id,
+
+    title: event.title,
+
+    start: event.all_day
+      ? event.start_at.slice(0, 10)
+      : event.start_at,
+
+    end: event.end_at
+      ? (event.all_day
+        ? event.end_at.slice(0, 10)
+        : event.end_at)
+      : undefined,
+
+    allDay: event.all_day,
+
+    extendedProps: {
+      team: event.team,
+      eventType: event.event_type,
+      location: event.location,
+      description: event.description,
+      status: event.status
+    }
+
+  }));
+
+  console.log("Venom calendar events loaded:", calendarEvents.length);
+
+  calendarStatus.textContent = "";
+
+  successCallback(calendarEvents);
+
+}
+
 
   });
 
