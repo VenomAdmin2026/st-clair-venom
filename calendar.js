@@ -13,6 +13,26 @@ const supabase = createClient(
 
 console.log("Venom calendar Supabase client initialized");
 
+async function testCalendarConnection() {
+
+  const { data, error } = await supabase
+    .from("venom_calendar_events")
+    .select("id", { count: "exact" })
+    .limit(1);
+
+  if (error) {
+    console.error("Calendar database connection failed:", error.message);
+    return;
+  }
+
+  console.log("Calendar database connection successful");
+  console.log("Calendar test results:", data);
+
+}
+
+testCalendarConnection();
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const calendarEl = document.getElementById("venomCalendar");
