@@ -593,3 +593,55 @@ eventForm.addEventListener("submit", async event => {
   calendarStatus.textContent = "";
 
 });
+
+async function testRegistrationEmail() {
+
+  const { data: isAdmin, error: adminError } =
+    await supabase.rpc("venom_is_admin");
+
+  if (adminError || isAdmin !== true) {
+    return;
+  }
+
+  const testButton = document.createElement("button");
+
+  testButton.textContent = "Test Registration Email";
+  testButton.style.margin = "15px";
+  testButton.style.padding = "10px";
+
+  testButton.addEventListener("click", async () => {
+
+    testButton.disabled = true;
+
+    try {
+
+      const { data, error } =
+        await supabase.functions.invoke(
+          "venom-registration",
+          { body: { test: true } }
+        );
+
+      if (error) {
+        throw error;
+      }
+
+      alert(data.message || "Test completed.");
+
+    } catch (error) {
+
+      alert("Email test failed: " + error.message);
+
+    } finally {
+
+      testButton.disabled = false;
+
+    }
+
+  });
+
+  document.getElementById("calendarAdminControls")
+    .appendChild(testButton);
+
+}
+
+testRegistrationEmail();
