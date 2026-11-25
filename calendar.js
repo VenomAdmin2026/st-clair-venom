@@ -119,6 +119,21 @@ const calendarEvents = filteredEvents.map(event => ({
     id: event.id,
 
     title: event.title,
+  
+backgroundColor:
+  event.team === "8U" ? "#9333ea" :
+  event.team === "14U" ? "#a3e635" :
+  "#6b7280",
+
+borderColor:
+  event.team === "8U" ? "#c084fc" :
+  event.team === "14U" ? "#84cc16" :
+  "#9ca3af",
+
+textColor:
+  event.team === "14U" ? "#101015" :
+  "#ffffff",
+
 
     start: event.all_day
       ? event.start_at.slice(0, 10)
