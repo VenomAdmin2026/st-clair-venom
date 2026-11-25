@@ -105,7 +105,16 @@ events: async function(fetchInfo, successCallback, failureCallback) {
     return;
   }
 
-  const calendarEvents = data.map(event => ({
+  const selectedTeam =
+  document.getElementById("calendarTeam").value;
+
+const filteredEvents = data.filter(event =>
+  selectedTeam === "all" ||
+  event.team === selectedTeam ||
+  event.team === "Organization"
+);
+
+const calendarEvents = filteredEvents.map(event => ({
 
     id: event.id,
 
@@ -145,6 +154,10 @@ events: async function(fetchInfo, successCallback, failureCallback) {
   });
 
   calendar.render();
+  document.getElementById("calendarTeam")
+  .addEventListener("change", () => {
+    calendar.refetchEvents();
+  });
 
   calendarStatus.textContent = "";
 
