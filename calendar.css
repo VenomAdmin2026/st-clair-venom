@@ -162,3 +162,164 @@
     font-size: 12px;
   }
 }
+
+/* CALENDAR EVENT ADMINISTRATION FORM */
+
+.calendar-dialog {
+  width: min(600px, 94vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  margin: auto;
+  padding: 28px;
+  background: #17171e;
+  color: #ffffff;
+  border: 1px solid #9333ea;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+  color-scheme: dark;
+}
+
+.calendar-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.calendar-dialog h2 {
+  color: #a3e635;
+  font-size: 1.8rem;
+  margin: 0 0 12px;
+}
+
+#calendarEventForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#calendarEventForm label {
+  color: #e5e7eb;
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+#calendarEventForm input:not([type="checkbox"]):not([type="hidden"]),
+#calendarEventForm select,
+#calendarEventForm textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: #24242e;
+  color: #ffffff;
+  border: 1px solid #44444f;
+  border-radius: 8px;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+#calendarEventForm input:focus,
+#calendarEventForm select:focus,
+#calendarEventForm textarea:focus {
+  outline: 2px solid #a3e635;
+  outline-offset: 2px;
+}
+
+#calendarEventForm textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+#calendarEventForm .calendar-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.calendar-checkbox input {
+  width: 20px;
+  height: 20px;
+  accent-color: #a3e635;
+  cursor: pointer;
+}
+
+#eventStartTimeGroup,
+#eventEndTimeGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#calendarEventForm [hidden] {
+  display: none !important;
+}
+
+.calendar-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.calendar-form-actions button {
+  flex: 1;
+  cursor: pointer;
+}
+
+#deleteCalendarEvent {
+  background: #b91c1c;
+  border-color: #ef4444;
+  color: #ffffff;
+}
+
+#deleteCalendarEvent:hover {
+  background: #dc2626;
+}
+
+#calendarFormMessage {
+  font-size: 14px;
+  margin: 8px 0;
+  overflow-wrap: anywhere;
+}
+
+#calendarFormMessage:empty {
+  display: none;
+}
+
+#calendarFormMessage.error {
+  color: #fca5a5;
+}
+
+#calendarFormMessage.success {
+  color: #a3e635;
+}
+
+#saveCalendarEvent:disabled,
+#deleteCalendarEvent:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* MOBILE EVENT FORM */
+
+@media (max-width: 600px) {
+
+  .calendar-dialog {
+    padding: 18px;
+    max-height: 92vh;
+  }
+
+  .calendar-dialog h2 {
+    font-size: 1.4rem;
+  }
+
+  .calendar-form-actions {
+    flex-direction: column;
+  }
+
+  .calendar-form-actions button {
+    width: 100%;
+  }
+
+}
