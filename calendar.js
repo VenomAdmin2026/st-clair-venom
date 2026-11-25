@@ -49,6 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     initialView: "dayGridMonth",
 
+timeZone: "America/Chicago",
+
     headerToolbar: {
       left: "prev,next today",
       center: "title",
